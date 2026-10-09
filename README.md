@@ -1,46 +1,233 @@
-# The Legacy Fix — a ProoV Guided Project, powered by IBM Bob
+# KM-Wächter | AI-Assisted Python Code Modernization
 
-This repo is the starting point of [The Legacy Fix](https://projectstudy.in/explore/experience-legacy-fix), a ProoV
-challenge. You are fixing **KM-Wächter**, the service that decides when each of Vossberg
-Mobility's 6,000 cars needs a service and prints the nightly fleet-health report. It has
-hidden bugs, several tests fail, and the code is written in an old style. Your job is to
-fix and modernize it — with IBM Bob (or another AI coding agent; another agent works just
-as well) doing the heavy lifting while you direct and audit it.
+### IBM SkillsBuild Bobathon 2026 · ProoV Guided Project
 
-> **Fictional company disclaimer.** Vossberg Mobility and KM-Wächter are invented for
-> teaching and are labelled as such in-app. They are not a real company. Industry figures
-> referenced in the accompanying brief come from public sources.
+A hands-on software engineering project focused on debugging,
+modernizing, testing, and analyzing a legacy Python-based
+vehicle maintenance monitoring system.
 
-## How to run
+**Project Status:** Completed  
+**Acceptance Checks:** 11/11 Passed  
+**Technologies:** Python, Pandas, Git, GitHub, VS Code, AI-Assisted Development
 
-You do not need Python installed to do this task — your AI agent can run all of this for
-you. If you do want to run it yourself, you need `python3`:
+## Project Overview
 
+KM-Wächter is a fictional fleet maintenance monitoring system
+developed as part of the IBM Bobathon 2026 challenge,
+"The Legacy Fix", delivered through ProoV.
+
+The application monitors a fictional fleet of 6,000 vehicles
+and determines when maintenance warnings should be issued.
+
+The original codebase contained calculation errors,
+missing-data handling problems, insufficient regression tests,
+and an incomplete data analysis component.
+
+The objective was to identify and resolve these issues
+while preserving the existing maintenance rules.
+
+## The Problem
+
+The original application used integer floor division
+to calculate vehicle maintenance wear:
+
+```python
+ratio = km_since_service // interval
+return ratio * 100
 ```
-pip install pytest pandas
-pytest          # the test suite (currently red)
-python verify.py  # your acceptance check: is the job actually done?
+
+This caused incorrect results for vehicles approaching
+their maintenance interval.
+
+For example:
+
+- Maintenance interval: 15,000 km
+- Distance since last service: 14,900 km
+- Incorrect result: 0%
+- Correct result: approximately 99.33%
+
+Because the warning threshold was set to 80%,
+affected vehicles were not flagged when they should have been.
+
+The defect could silently prevent maintenance warnings
+from being generated.
+
+## Implemented Improvements
+
+### 1. Corrected Maintenance Calculations
+
+Replaced floor division with accurate division to
+calculate maintenance wear percentages.
+
+Preserved the original business requirements:
+
+- Maintenance interval: 15,000 km
+- Warning threshold: 80%
+
+### 2. Improved Missing-Data Handling
+
+Updated maintenance checks to handle missing
+last-service readings without incorrectly treating
+them as zero.
+
+Improved fleet reporting to prevent crashes
+caused by missing maintenance data.
+
+### 3. Fixed Reporting and Utility Calculations
+
+- Corrected average maintenance wear calculations.
+- Fixed kilometres-to-miles conversion.
+- Improved reliability of the nightly fleet report.
+
+### 4. Expanded Regression Testing
+
+Added regression tests covering:
+
+- Vehicles approaching their maintenance interval.
+- Accurate fractional wear calculations.
+- Missing maintenance readings.
+- Fleet report behavior and edge cases.
+
+### 5. Conducted Breakdown-Risk Data Analysis
+
+Used Python and Pandas to analyze a dataset of
+120 vehicles, including 26 recorded breakdowns.
+
+Compared vehicle characteristics between vehicles
+with and without recorded breakdowns.
+
+The analysis found larger differences in:
+
+- Kilometres since last service.
+- Average daily driving distance.
+- Vehicle load factor.
+
+Total odometer readings and vehicle age showed
+relatively small differences between the groups.
+
+These findings represent descriptive associations
+within the provided dataset, not evidence of causation
+or a validated predictive model.
+
+## Testing and Verification
+
+The project includes automated tests and an
+independent acceptance verification script.
+
+Run the acceptance checks with:
+
+```bash
+python verify.py
 ```
 
-The test suite is **red on purpose** — that is the starting point of the task, not a bug in
-this template.
+**Final verification result:**
 
-## What's in this repo
+```text
+KM-Waechter acceptance check
+============================
+11 of 11 checks pass.
+Done. Push it and hand in the link.
+```
 
-- **`TASK.md`** — your mission brief. Read this first; it has every step of the task,
-  what NOT to change, and how to hand the work back in.
-- **`verify.py`** — your own acceptance check. It does not grade you — it tells you,
-  mechanically, whether the job is actually done, so "finished" is something you checked
-  rather than something your AI agent told you. Run `python verify.py` before you hand in.
-- **`km_wachter.py` / `fleet_report.py`** — the two core modules with the hidden bugs.
-- **`config_loader.py` / `fleet_utils.py` / `log_util.py`** — 2013-era helper modules: dated
-  style, dead code, and at least one more quiet problem no test catches.
-- **`settings.cfg`** — the maintenance rules, read at runtime. The values must not change.
-- **`test_km_wachter.py` / `test_fleet_report.py`** — the test suite (currently red).
-- **`analyze.py`** — the "make it smarter" capstone: a data-driven breakdown-risk analysis.
-- **`fleet_history.csv`** — 120 labelled cars for the analysis step.
-- **`NOTES.md`** — write this yourself: what your AI agent got wrong that you caught.
+The successful checks confirm that the identified
+maintenance defects were corrected, the required
+business rules were preserved, the missing regression
+test was added, and the data analysis was completed.
 
----
+## AI-Assisted Development Workflow
 
-This challenge is part of the ProoV project "The Legacy Fix" — https://projectstudy.in/explore/experience-legacy-fix
+This project was completed using an AI-assisted
+development workflow.
+
+My responsibilities included:
+
+1. Examining the legacy codebase and identifying defects.
+2. Defining specific tasks and acceptance criteria.
+3. Directing an AI coding agent to implement targeted changes.
+4. Reviewing generated code for correctness.
+5. Identifying unintended modifications.
+6. Validating changes through tests and acceptance checks.
+7. Documenting the technical decisions and findings.
+
+During the guided code-review exercise, I identified
+an incorrect use of floor division, an unauthorized
+change to the maintenance warning threshold,
+and missing regression test coverage.
+
+This experience reinforced the importance of
+reviewing AI-generated code rather than accepting
+changes without verification.
+
+## Repository Structure
+
+| File | Purpose |
+|------|---------|
+| `km_wachter.py` | Core maintenance calculations |
+| `fleet_report.py` | Fleet reporting functionality |
+| `fleet_utils.py` | Utility functions and unit conversions |
+| `config_loader.py` | Configuration handling |
+| `settings.cfg` | Maintenance configuration |
+| `test_km_wachter.py` | Maintenance regression tests |
+| `test_fleet_report.py` | Fleet reporting tests |
+| `analyze.py` | Breakdown-risk data analysis |
+| `fleet_history.csv` | Dataset containing 120 vehicles |
+| `verify.py` | Acceptance verification script |
+| `NOTES.md` | Review observations and project reflections |
+| `TASK.md` | Original project requirements |
+
+## Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/sudenzkk/proof-km-waechter-fix.git
+cd proof-km-waechter-fix
+```
+
+Install the required dependencies:
+
+```bash
+python -m pip install pytest pandas
+```
+
+Run the tests:
+
+```bash
+python -m pytest
+```
+
+Run the acceptance verification:
+
+```bash
+python verify.py
+```
+
+Run the data analysis:
+
+```bash
+python analyze.py
+```
+
+## Certification
+
+**IBM SkillsBuild — IBM Bobathon: The Legacy Fix**
+
+[View IBM SkillsBuild Completion Certificate](https://skills.yourlearning.ibm.com/certificate/share/ac3ce9b670ewogICJvYmplY3RJZCIgOiAiVVJMLTM4Q0FFRTZENjZFMiIsCiAgIm9iamVjdFR5cGUiIDogIkFDVElWSVRZIiwKICAibGVhcm5lckNOVU0iIDogIjkyNzM1OThSRUciCn08970d726ea-10)
+
+## Project Context
+
+This repository was created as part of
+**The Legacy Fix**, a ProoV Guided Project
+powered by IBM Bob.
+
+The fictional company Vossberg Mobility and
+the KM-Wächter application were created for
+educational purposes.
+
+The project demonstrates practical experience
+in Python debugging, regression testing,
+data analysis, GitHub workflows, and
+AI-assisted software development.
+
+**Original challenge:**
+[The Legacy Fix — ProoV](https://projectstudy.in/explore/experience-legacy-fix)
