@@ -1,12 +1,9 @@
 # What I checked, and what the agent got wrong
-
-Write this yourself, in your own words. It is the part of the repo that proves the work is yours.
-
 ## What the agent got wrong
-(Every agent gets something wrong on a job this size. What did you catch? How did you notice?)
+During the initial AI code review exercise, I noticed that the agent had kept the floor division operator (//), which caused incorrect wear percentages. It had also changed the maintenance warning threshold from 80% to 85% without being asked and had not added a regression test. This showed me why AI-generated code needs to be reviewed instead of accepted automatically.
 
 ## What I checked before I accepted its work
-(How do you KNOW the wear bug is fixed and the 80% rule is untouched? What did you run?)
+I checked that the wear calculation now gives approximately 99.33% for a car that has driven 14,900 km out of a 15,000 km service interval. I also checked that missing service readings are handled safely, the nightly report does not crash, and the average wear and kilometres-to-miles conversion are calculated correctly. I used python3 verify.py to validate the changes. The number of passing checks increased from 2/11 initially to 10/11 before completing this documentation. I also confirmed that the 15,000 km service interval and 80% warning threshold were preserved.
 
 ## What the data actually said
-(Which factors predict a breakdown, and which obvious-looking one turned out not to?)
+I analyzed a dataset of 120 vehicles, including 26 that had experienced a breakdown. Vehicles that broke down had driven approximately 11,678 km since their last service, compared with 7,261 km for vehicles without a breakdown. They also had higher average daily mileage (160 vs. 131 km) and a higher load factor (0.60 vs. 0.51). Surprisingly, total odometer mileage and vehicle age were almost identical between the two groups. Based on these results, kilometres since the last service, daily mileage, and load factor appear more useful for identifying breakdown-related patterns in this dataset than vehicle age or total mileage. However, these are descriptive comparisons. They show associations and do not prove that these factors cause breakdowns.
